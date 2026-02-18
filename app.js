@@ -27,11 +27,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://agrimanager-frontend.onrender.com', // Update with your actual frontend URL
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: allowedOrigins,
   credentials: true
 }))
-
 app.use('/', userRouter);
 app.use('/users', usersRouter);
 app.use('/crops',cropsRouter);
